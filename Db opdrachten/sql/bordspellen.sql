@@ -95,3 +95,17 @@ COLLATE = utf8mb4_0900_ai_ci;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+
+
+ALTER TABLE bordspellen MODIFY `aantal spelers` VARCHAR(10);
+
+-- Then insert with range values
+INSERT INTO bordspellen (naam, `aantal spelers`, beschrijving, coop) 
+VALUES 
+('Catan', '3-4', 'Strategisch ruil- en bouwspel op het eiland Catan', 0),
+('Pandemic', '2-4', 'Coöperatief spel waarin spelers samenwerken om ziektes te bestrijden', 1),
+('Ticket to Ride', '2-5', 'Treinavontuur door verschillende landen en continenten', 0),
+('Codenames', '2-8', 'Woordassociatiespel voor twee teams', 0),
+('Gloomhaven', '1-4', 'Complex campaign-based fantasy adventure spel', 1);
