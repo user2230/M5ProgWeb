@@ -1,0 +1,29 @@
+multi_statements (uitleg in het Nederlands)
+
+Wat zijn multi-statements?
+- In MySQL kun je meerdere SQL-statements achter elkaar plaatsen, gescheiden door een puntkomma (;) en ze in één keer laten uitvoeren.
+- In de mysqli-extensie kun je meerdere statements sturen met mysqli::multi_query() of door de MySQL CLIENT_MULTI_STATEMENTS flag te gebruiken bij de connectie.
+
+Voorbeeld:
+- "SELECT * FROM gebruikers; DELETE FROM logs WHERE 1=1;"
+- Als je dit als één string aan de database stuurt met multi_query, worden beide statements uitgevoerd.
+
+Waarom is dat gevaarlijk?
+- SQL-injectie: als gebruikersinvoer rechtstreeks in een query terechtkomt, kan een aanvaller extra statements aan de query plakken, bijvoorbeeld:
+  "mario'; DROP TABLE leerlingen; --"
+  Als de applicatie multi-statements toelaat, kan die DROP TABLE uitgevoerd worden naast de oorspronkelijke SELECT.
+- Meer impact: zonder multi-statements kan een succesvolle injection vaak alleen het lopende statement veranderen; met multi-statements kan de aanvaller meerdere verschillende bewerkingen uitvoeren (SELECT, INSERT, UPDATE, DELETE, DROP, etc.).
+- Foutmeldingen en informatielekken worden ernstiger: de DB kan gevoelige meta-informatie teruggeven of schema-details prijsgeven.
+
+Hoe voorkom je deze risico's?
+- Gebruik altijd prepared statements (bind parameters). Prepared statements voorkomen dat invoer als SQL-instructie wordt geïnterpreteerd.
+- Zet multi-statements uit tenzij expliciet en veilig vereist. Gebruik geen mysqli::multi_query() en verbind niet met CLIENT_MULTI_STATEMENTS.
+- Valideer en ontsmet invoer (bijv. verwacht specifieke dataformaten) en beperk permissies van DB-accounts.
+- Toon geen gedetailleerde DB-foutmeldingen in productiesystemen.
+
+Kort samengevat:
+- Multi-statements zijn handig maar verhogen het risico van destructieve SQL-injecties als invoer niet goed wordt behandeld.
+- De veiligste aanpak: prepared statements + geen multi-statements + minimale DB-permissies.
+
+online opgezocht!
+
